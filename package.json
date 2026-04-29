@@ -2,13 +2,14 @@
   "name": "rider-delivery-app",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
-"scripts": {
-  "start": "expo start",
-  "android": "expo start --android",
-  "ios": "expo start --ios",
-  "web": "expo start --web",
-  "build": "expo export"
-},
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "build": "expo build:web",
+    "vercel-build": "expo build:web"
+  },
   "dependencies": {
     "@expo/webpack-config": "^19.0.1",
     "@microsoft/signalr": "^7.0.14",
