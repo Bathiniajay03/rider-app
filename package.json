@@ -7,8 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "build": "expo export",
-    "vercel-build": "expo export"
+    "build": "expo export:web . && node -e \"const fs=require('fs'); fs.rmSync('dist',{recursive:true,force:true}); fs.renameSync('web-build','dist');\"",
+    "vercel-build": "expo export:web . && node -e \"const fs=require('fs'); fs.rmSync('dist',{recursive:true,force:true}); fs.renameSync('web-build','dist');\""
   },
   "dependencies": {
     "@expo/webpack-config": "^19.0.1",

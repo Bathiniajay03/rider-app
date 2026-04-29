@@ -1,4 +1,11 @@
 {
-  "name": "RiderDeliveryApp",
-  "displayName": "Rider Delivery"
+  "expo": {
+    "name": "RiderDeliveryApp",
+    "slug": "rider-delivery-app",
+    "displayName": "Rider Delivery",
+    "platforms": ["ios", "android", "web"],
+    "web": {
+      "bundler": "webpack"
+    }
+  }
 }
