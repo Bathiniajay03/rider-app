@@ -8,6 +8,7 @@ const api = axios.create({
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': 'true',
   },
 });
 
@@ -15,6 +16,10 @@ api.interceptors.request.use(async (config) => {
   const token = await AsyncStorage.getItem('rider_token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
+  }
+  const tenantId = await AsyncStorage.getItem('rider_tenant_id');
+  if (tenantId) {
+    config.headers['X-Tenant-Id'] = tenantId;
   }
   return config;
 });
@@ -27,6 +32,7 @@ api.interceptors.response.use(
       AsyncStorage.removeItem('rider_id');
       AsyncStorage.removeItem('rider_name');
       AsyncStorage.removeItem('rider_email');
+      AsyncStorage.removeItem('rider_tenant_id');
     }
 
     return Promise.reject(error);
@@ -38,9 +44,14 @@ export const deliveryApi = {
     const response = await api.post('/rider/login', { email, password });
     if (response.data.token) {
       await AsyncStorage.setItem('rider_token', response.data.token);
-      await AsyncStorage.setItem('rider_id', String(response.data.riderId));
-      await AsyncStorage.setItem('rider_name', response.data.riderName || '');
+      await AsyncStorage.setItem('rider_id', String(response.data.RiderId || response.data.riderId));
+      await AsyncStorage.setItem('rider_name', response.data.RiderName || response.data.riderName || '');
       await AsyncStorage.setItem('rider_email', response.data.email || email);
+      if (response.data.TenantId || response.data.tenantId) {
+        await AsyncStorage.setItem('rider_tenant_id', String(response.data.TenantId || response.data.tenantId));
+      } else {
+        await AsyncStorage.removeItem('rider_tenant_id');
+      }
     }
     return response.data;
   },
